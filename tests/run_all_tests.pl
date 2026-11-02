@@ -12,7 +12,4 @@
 :- consult('test_grafo_motor.plt').
 :- consult('test_cotizador_motor.plt').
 :- consult('test_diagnostico_motor.plt').
-
-% Predicado de ejecución para scripts de CI / línea de comandos
-ejecutar_tests :-
-    run_tests.
+:- consult('test_taller_servicio.plt').
