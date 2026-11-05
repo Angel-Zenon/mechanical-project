@@ -126,21 +126,22 @@ project-mechanic/
    ```prolog
    ?- menu.
    ```
-3. Se desplegará el menú principal para seleccionar con números del **1 al 4**:
+3. Se desplegará el menú principal para seleccionar con números del **1 al 5**:
 
 ```text
 ================================================================================
         SISTEMA EXPERTO DE DIAGNOSTICO AUTOMOTRIZ Y COTIZACION DINAMICA
 ================================================================================
- Seleccione una opcion ingresando su numero (1-4):
+ Seleccione una opcion ingresando su numero (1-5):
 
   [1] Listar catalogo de vehiculos (10 modelos, arquitectura y tarifas)
   [2] Listar catalogo de sintomas observables disponibles
   [3] Listar catalogo de testigos de tablero y codigos OBD-II disponibles
   [4] Diagnosticar vehiculo y cotizar orden de trabajo (Atender cliente)
+  [5] Comparar 2 vehiculos (elegir servicio en cada uno: piezas, tiempo y precio)
   [0] Salir del sistema
 ================================================================================
-Ingrese su opcion [0-4]: 
+Ingrese su opcion [0-5]: 
 ```
 
 ### 5.3. Descripción de las Opciones del Menú
@@ -149,10 +150,10 @@ Ingrese su opcion [0-4]:
 Muestra los 10 modelos disponibles, su configuración mecánica y su factor multiplicador de tarifa.
 
 #### Opción `2`: Listar Catálogo de Síntomas Disponibles
-Despliega el catálogo clínico completo con el identificador exacto en Prolog que puedes usar (ej. `tironeo_al_acelerar`, `ralenti_inestable`, `humo_negro`, `sobrecalentamiento`, etc.) y su descripción.
+Despliega el catálogo clínico completo con los 24 síntomas observables registrados en Prolog (ej. `tironeo_al_acelerar`, `ralenti_inestable`, `silbido_en_motor`, `chasquido_al_intentar_arrancar`, `sobrecalentamiento`, etc.) y su descripción.
 
 #### Opción `3`: Listar Catálogo de Testigos y Códigos OBD-II
-Despliega los testigos de tablero y códigos de diagnóstico registrados (ej. `check_engine`, `codigo_p0300`, `codigo_p0200`, `testigo_bateria`, etc.).
+Despliega los 15 testigos de tablero y códigos de diagnóstico registrados (ej. `check_engine`, `codigo_p0300`, `codigo_p0200`, `codigo_p0171`, `codigo_p0016`, `testigo_bateria`, etc.).
 
 #### Opción `4`: Atender Cliente (Diagnóstico y Cotización en Vivo)
 Flujo asistido por teclado:
@@ -192,6 +193,12 @@ Factor de Complejidad:                     x1.50
 COSTO TOTAL ESTIMADO:                  $2250 MXN
 ================================================================================
 ```
+
+#### Opción `5`: Comparar 2 Vehículos (Piezas a Desmontar, Tiempo y Precio por Servicio)
+Permite elegir **2 vehículos** y seleccionar el **servicio (o lista de servicios) a realizar en cada uno** (con opción de presionar `Enter` en el segundo vehículo para comparar exactamente el mismo servicio del primero). Muestra:
+* La ruta ordenada de piezas a desmontar de cada auto con su costo y tiempo base.
+* El análisis de conjuntos topológicos (piezas comunes vs. piezas exclusivas de cada auto).
+* Una tabla comparativa directa con total de piezas a desmontar, tiempo estimado, factor de tarifa, precio total y las diferencias netas ($\Delta$ piezas, $\Delta$ tiempo y $\Delta$ precio en MXN).
 
 ---
 

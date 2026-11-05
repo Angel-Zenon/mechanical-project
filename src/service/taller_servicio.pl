@@ -1,6 +1,7 @@
 :- module(taller_servicio, [
     diagnosticar_y_cotizar/5,
-    generar_orden_trabajo/3
+    generar_orden_trabajo/3,
+    comparar_vehiculos_servicio/5
 ]).
 
 :- use_module('../kb/catalogos_kb').
@@ -89,3 +90,52 @@ diagnosticar_y_cotizar(Carro, Sintomas, Testigos, sugerido, DictResultado) :-
         pieza: Pieza,
         orden_servicio: DictOrden
     }.
+
+%% comparar_vehiculos_servicio(+Carro1, +ObjetivosRaw1, +Carro2, +ObjetivosRaw2, -DictComparativa) is semidet.
+%
+% Genera las órdenes de servicio para dos vehículos (con el servicio o lista de
+% servicios elegidos para cada uno) y calcula las diferencias topológicas
+% (piezas a desmontar comunes y exclusivas), de tiempo y de precio total.
+comparar_vehiculos_servicio(Carro1, ObjetivosRaw1, Carro2, ObjetivosRaw2, DictComparativa) :-
+    generar_orden_trabajo(Carro1, ObjetivosRaw1, Orden1),
+    generar_orden_trabajo(Carro2, ObjetivosRaw2, Orden2),
+    Pasos1 = Orden1.pasos_desensamble,
+    Pasos2 = Orden2.pasos_desensamble,
+    length(Pasos1, NumPasos1),
+    length(Pasos2, NumPasos2),
+    DiffPasos is abs(NumPasos1 - NumPasos2),
+    intersection(Pasos1, Pasos2, PiezasComunes),
+    subtract(Pasos1, Pasos2, Exclusivas1),
+    subtract(Pasos2, Pasos1, Exclusivas2),
+    Tiempo1 = Orden1.tiempo_total_min,
+    Tiempo2 = Orden2.tiempo_total_min,
+    DiffTiempo is abs(Tiempo1 - Tiempo2),
+    Costo1 = Orden1.costo_total_mxn,
+    Costo2 = Orden2.costo_total_mxn,
+    DiffCosto is abs(Costo1 - Costo2),
+    determinar_menor(Carro1, Tiempo1, Carro2, Tiempo2, MasRapido),
+    determinar_menor(Carro1, Costo1, Carro2, Costo2, MasEconomico),
+    DictComparativa = comparativa{
+        orden_1: Orden1,
+        orden_2: Orden2,
+        resumen: resumen_comparativo{
+            num_pasos_1: NumPasos1,
+            num_pasos_2: NumPasos2,
+            diferencia_pasos: DiffPasos,
+            piezas_comunes: PiezasComunes,
+            piezas_exclusivas_1: Exclusivas1,
+            piezas_exclusivas_2: Exclusivas2,
+            diferencia_tiempo_min: DiffTiempo,
+            diferencia_costo_mxn: DiffCosto,
+            mas_rapido: MasRapido,
+            mas_economico: MasEconomico
+        }
+    }.
+
+determinar_menor(Carro1, Valor1, _, Valor2, Carro1) :-
+    Valor1 < Valor2,
+    !.
+determinar_menor(_, Valor1, Carro2, Valor2, Carro2) :-
+    Valor2 < Valor1,
+    !.
+determinar_menor(_, _, _, _, empate).

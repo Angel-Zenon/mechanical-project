@@ -55,4 +55,30 @@ verificar_descendente([C1, C2|Resto]) :-
     assertion(C1 >= C2),
     verificar_descendente([C2|Resto]).
 
+test(diagnostico_nuevas_fallas_expandidas, [nondet]) :-
+    % 1. Falla de batería (celda muerta)
+    diagnostico_estricto(
+        [chasquido_al_intentar_arrancar, tablero_parpadea_al_arrancar, dificultad_arranque],
+        [testigo_bateria, codigo_p0562],
+        FallaBat),
+    assertion(FallaBat == bateria_celda_muerta),
+    % 2. Fuga de vacío en admisión
+    diagnostico_estricto(
+        [silbido_en_motor, ralenti_inestable, motor_se_apaga_en_freno],
+        [check_engine, codigo_p0171, codigo_p2279],
+        FallaVacio),
+    assertion(FallaVacio == fuga_vacio_admision),
+    % 3. Banda de distribución desfasada
+    diagnostico_estricto(
+        [golpeteo_metalico_sincronizacion, motor_no_enciende, explosion_escape],
+        [check_engine, codigo_p0016],
+        FallaDist),
+    assertion(FallaDist == banda_distribucion_desfasada),
+    % 4. Obstrucción de tolva de enfriamiento (Bóxer aire)
+    diagnostico_estricto(
+        [sobrecalentamiento, olor_aceite_caliente_turbina, perdida_potencia],
+        [testigo_temperatura],
+        FallaTolva),
+    assertion(FallaTolva == obstruccion_tolva_enfriamiento).
+
 :- end_tests(diagnostico_motor).

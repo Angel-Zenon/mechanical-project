@@ -24,12 +24,13 @@
     format('        SISTEMA EXPERTO DE DIAGNOSTICO AUTOMOTRIZ Y COTIZACION DINAMICA~n', []),
     format('                       (SWI-Prolog Declarativo Modular)~n', []),
     format('================================================================================~n', []),
-    format(' Para iniciar el menu interactivo por teclado (opciones 1-4), escriba:~n~n', []),
+    format(' Para iniciar el menu interactivo por teclado (opciones 1-5), escriba:~n~n', []),
     format('    ?- menu.~n~n', []),
     format(' Opciones disponibles en el sistema:~n', []),
     format('  [1] listar_vehiculos_cli.  - Catalogo de 10 vehiculos, motor y tarifas~n', []),
     format('  [2] listar_sintomas_cli.   - Catalogo de sintomas observables~n', []),
     format('  [3] listar_testigos_cli.   - Catalogo de testigos de tablero y OBD-II~n', []),
     format('  [4] atender_cliente_cli(Auto, Sintomas, Testigos). - Diagnostico y cotizacion~n', []),
+    format('  [5] comparar_vehiculos_cli(Auto1, Serv1, Auto2, Serv2). - Comparar 2 autos~n', []),
     format('================================================================================~n~n', [])
 ), now).

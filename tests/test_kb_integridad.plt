@@ -48,9 +48,10 @@ test(ausencia_de_ciclos_arbitrarios_en_10_vehiculos) :-
            assertion(\+ grafo_tiene_ciclo(V, _))).
 
 test(integridad_fallas_piezas_en_catalogo) :-
-    % Toda pieza asociada a una falla debe existir en maniobra/3
+    % Toda pieza asociada a una falla debe existir en maniobra/3 y ser pieza_intervenible/1
     forall(falla_pieza(_, Pieza),
-           assertion(maniobra(Pieza, _, _))).
+           ( assertion(maniobra(Pieza, _, _)),
+             assertion(pieza_intervenible(Pieza)) )).
 
 test(integridad_fallas_sintomas_en_catalogo) :-
     % Todo síntoma asociado a una falla debe existir en sintoma_catalogo/2
@@ -69,5 +70,20 @@ test(fallas_con_evidencia_no_vacia) :-
              findall(T, falla_testigo(Falla, T), Testigos),
              append(Sintomas, Testigos, Evidencia),
              assertion(Evidencia \= []) )).
+
+test(expansion_clinica_umbrales_y_10_vehiculos) :-
+    % Verifica que se mantengan exactamente 10 vehículos y se hayan expandido fallas, síntomas y testigos
+    findall(V, vehiculo(V, _, _, _), Vehiculos),
+    findall(F, falla_pieza(F, _), Fallas),
+    findall(S, sintoma_catalogo(S, _), Sintomas),
+    findall(T, testigo_catalogo(T, _), Testigos),
+    length(Vehiculos, NumV),
+    length(Fallas, NumF),
+    length(Sintomas, NumS),
+    length(Testigos, NumT),
+    assertion(NumV == 10),
+    assertion(NumF >= 18),
+    assertion(NumS >= 24),
+    assertion(NumT >= 15).
 
 :- end_tests(kb_integridad).
